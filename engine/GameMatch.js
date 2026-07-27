@@ -1,6 +1,8 @@
 import {GameWorld} from './gameWorld.js';
 import {MatchState} from './matchState.js';
 import {MatchEngine} from './matchEngine.js';
+import {MatchController} from './matchController.js';
+import {PossessionManager} from './possession.js';
 
 export class GameMatch {
  constructor(options={}){
@@ -16,15 +18,19 @@ export class GameMatch {
   this.world.addPlayers(this.players);
   this.world.setBall(this.engine.ball);
 
+  this.controller = new MatchController(this.world);
+  this.possession = new PossessionManager();
+
+  this.controller.initialize();
+
   this.running = false;
-  this.lastUpdate = 0;
  }
 
  frame(delta=1){
-  if(!this.running) return;
+  if(!this.running) return this.state;
 
-  this.updatePlayers(delta);
   this.updateAI(delta);
+  this.updatePlayers(delta);
   this.updateBall(delta);
   this.checkPossession();
   this.updateMatchTime();
@@ -37,7 +43,7 @@ export class GameMatch {
  }
 
  updateAI(){
-  // Tactical systems are connected here as they are added.
+  this.controller.update();
  }
 
  updateBall(){
@@ -47,21 +53,31 @@ export class GameMatch {
  }
 
  checkPossession(){
-  // Possession manager integration point.
+  const owner=this.possession.update(
+   this.world.players,
+   this.world.ball
+  );
+
+  if(owner){
+   this.state.possession={
+    home: owner.team==='home'?100:0,
+    away: owner.team==='away'?100:0
+   };
+  }
  }
 
  updateMatchTime(){
   if(this.state.minute !== this.engine.minute){
-   this.state.minute = this.engine.minute;
+   this.state.minute=this.engine.minute;
   }
  }
 
  start(){
-  this.running = true;
+  this.running=true;
  }
 
  stop(){
-  this.running = false;
+  this.running=false;
  }
 
  getScore(){
