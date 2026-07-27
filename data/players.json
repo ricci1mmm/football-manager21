@@ -1,0 +1,25 @@
+{
+ "players":[
+  {
+   "id":1,
+   "name":"Alex Forward",
+   "position":"ST",
+   "rating":82,
+   "age":24
+  },
+  {
+   "id":2,
+   "name":"Max Defender",
+   "position":"CB",
+   "rating":78,
+   "age":27
+  },
+  {
+   "id":3,
+   "name":"Leo Keeper",
+   "position":"GK",
+   "rating":84,
+   "age":25
+  }
+ ]
+}

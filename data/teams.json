@@ -1,0 +1,18 @@
+{
+ "teams": [
+  {
+   "id":1,
+   "name":"FC Alpha",
+   "formation":"4-4-2",
+   "attack":75,
+   "defence":70
+  },
+  {
+   "id":2,
+   "name":"FC Beta",
+   "formation":"4-3-3",
+   "attack":72,
+   "defence":76
+  }
+ ]
+}
